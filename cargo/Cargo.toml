@@ -1,0 +1,33 @@
+[package]
+name = "{{project-name}}"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+authors = ["{{authors}}"]
+license = "MIT OR Apache-2.0"
+
+[features]
+default = []
+all_in_ram = []
+
+[dependencies]
+esp-println = { version = "0.5.0", default-features = false, features = [
+    "esp8266",
+    "uart",
+] }
+esp8266-hal = "0.5.1"
+panic-halt = "0.2.0"
+xtensa-lx = { version = "=0.7.0", features = ["esp8266"] }
+
+[profile.dev]
+lto = "fat"
+opt-level = "z"
+# running cargo run with debug symbols produces large firmware file
+debug = false
+
+[profile.dev.package.compiler_builtins]
+overflow-checks = false
+
+[profile.release]
+lto = "fat"
+opt-level = "s"
